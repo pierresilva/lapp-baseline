@@ -17,4 +17,4 @@ Route::get('/my-example', function (Request $request) {
     return response()->json([
         'message' => 'Laravel Modules my-example works!'
     ]);
-});//->middleware('auth:api');
+})->middleware('auth:api');
