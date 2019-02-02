@@ -6,11 +6,23 @@
     "type": "project",
     "require": {
         "php": "^7.1.3",
+        "ext-zip": "^1.15",
+        "barryvdh/laravel-ide-helper": "^2.5",
+        "doctrine/dbal": "^2.8",
         "fideloper/proxy": "^4.0",
+        "illuminate/filesystem": "^5.7",
+        "illuminate/http": "^5.7",
+        "illuminate/support": "^5.7",
         "laravel/framework": "5.7.*",
         "laravel/passport": "^7.0",
         "laravel/tinker": "^1.0",
-        "laravolt/avatar": "^2.0"
+        "laravolt/avatar": "^2.0",
+        "league/flysystem": "^1.0",
+        "league/flysystem-ziparchive": "^1.0",
+        "spatie/array-to-xml": "^2.8",
+        "spatie/period": "^1.1",
+        "spatie/regex": "^1.4",
+        "spatie/tax-calculator": "^0.1.1"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
@@ -18,6 +30,7 @@
         "fzaninotto/faker": "^1.4",
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^2.0",
+        "phpmd/phpmd": "^2.6",
         "phpunit/phpunit": "^7.0"
     },
     "autoload": {
@@ -27,7 +40,20 @@
         ],
         "psr-4": {
             "App\\": "app/",
-            "pierresilva\\Modules\\": "packages/pierresilva/laravel-modules/src"
+            "pierresilva\\Activitylog\\": "packages/pierresilva/laravel-activitylog/src",
+            "pierresilva\\CodeGenerator\\": "packages/pierresilva/laravel-code-generator/src",
+            "pierresilva\\DatabaseModels\\": "packages/pierresilva/laravel-database-models/src",
+            "pierresilva\\InverseSeed\\": "packages/pierresilva/laravel-inverse-seed/src",
+            "pierresilva\\ModelStatus\\": "packages/pierresilva/laravel-model-status/src",
+            "pierresilva\\Modules\\": "packages/pierresilva/laravel-modules/src",
+            "pierresilva\\QueryBuilder\\": "packages/pierresilva/laravel-query-builder/src",
+            "pierresilva\\SchemaBuilder\\": "packages/pierresilva/laravel-schema-builder/src",
+            "pierresilva\\Sentinel\\": "packages/pierresilva/laravel-sentinel/src",
+            "pierresilva\\SchemalessAttributes\\": "packages/pierresilva/laravel-schemaless-attributes/src",
+            "pierresilva\\Sluggable\\": "packages/pierresilva/laravel-sluggable/src",
+            "pierresilva\\Translatable\\": "packages/pierresilva/laravel-translatable/src",
+            "pierresilva\\TranslationLoader\\": "packages/pierresilva/laravel-translation-loader/src",
+            "pierresilva\\PassportJwtClaims\\": "packages/pierresilva/passport-custom-jwt/src"
         }
     },
     "autoload-dev": {
@@ -50,7 +76,9 @@
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover"
+            "@php artisan package:discover",
+            "php artisan ide-helper:generate",
+            "php artisan ide-helper:meta"
         ]
     },
     "config": {

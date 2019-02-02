@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Translation\Translator;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,27 +19,154 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group([
-    'prefix' => 'auth',
-], function () {
-    Route::post('login', 'Api\AuthController@login');
-    Route::post('signup', 'Api\AuthController@signup');
-    Route::get('signup/activate/{token}', 'Api\AuthController@signupActivate');
-    Route::post('resend/activate', 'Api\AuthController@resendActivationCode');
-    Route::group([
-        'middleware' => 'auth:api',
-    ], function () {
-        Route::get('logout', 'Api\AuthController@logout');
-        Route::get('user', 'Api\AuthController@user');
-    });
+Route::get('settings', function () {
+    $settings = \App\Setting::get()->toArray();
+    $settingsResponse = [];
+
+    foreach ($settings as $key => $value) {
+        $settingsResponse[$value['key']] = $value['value'];
+    }
+    return response()->json([
+        'app' => $settingsResponse,
+    ], 200);
+});
+
+Route::get('users/{userId}', function ($userId = null) {
+    if (!$userId) {
+        $userId = 1;
+    }
+    $user = \App\User::findOrFail($userId)->toArray();
+
+    return response()->json([
+        'user' => $user,
+    ], 200);
+});
+
+Route::get('translations/{lang}', function ($lang) {
+    app()->setLocale($lang);
+
+    $translationFiles = File::files(base_path('resources/lang/' . app()->getLocale()));
+
+    $files = [];
+    foreach ($translationFiles as $path) {
+        $files[] = pathinfo($path);
+    }
+
+    $langs = [];
+
+    foreach ($files as $file) {
+        $langs[$file['filename']] = File::getRequire($file['dirname'] . '/' . $file['basename']);
+    }
+
+    array_walk_recursive(
+        $langs,
+        function (&$value) {
+            if (is_string($value)) {
+                $value = ngx_translate_parse($value);
+            }
+        }
+    );
+
+    return response()->json([
+        'translations' => $langs,
+    ], 200);
+});
+
+Route::get('/tests', function (\Request $request) {
+    sleep(3);
+    return response()->json([
+        'status' => 1,
+        'message' => 'Not Found',
+        'response' => [
+            'errors' => [
+                'some-1' => 'Error One',
+                'some-2' => 'Error Two',
+            ],
+        ],
+    ], 404);
+});
+
+
+Route::get('/test', function (\Request $request) {
+    sleep(3);
+    return response()->json([
+        'message' => 'Some Message',
+        'status' => 0,
+        'time' => Carbon::now()->timestamp,
+        'response' => [
+            'data' => 'Some Data',
+            'meta' => null
+        ],
+    ]);
+});
+
+Route::any('/schema/parse', 'Api\SchemaParserController@parse');
+
+Route::post('/test/test', function (Request $request) {
+    sleep(3);
+    $validator = Validator::make($request->all(), [
+        'email' => 'required|email',
+        'name' => 'required|min:6'
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'message' => 'Validation error!',
+            'status' => 1,
+            'time' => Carbon::now()->timestamp,
+            'response' => [
+                'errors' => $validator->errors()->toArray()
+            ],
+        ], 422);
+    }
+
+    return response()->json([
+        'message' => 'Some Message',
+        'status' => 0,
+        'time' => Carbon::now()->timestamp,
+        'response' => [
+            'data' => 'Some Data',
+            'meta' => null
+        ],
+    ]);
 });
 
 Route::group([
     'namespace' => 'Api',
     'middleware' => 'api',
-    'prefix' => 'password',
+    'prefix' => 'auth',
 ], function () {
-    Route::post('create', 'PasswordResetController@create');
-    Route::get('find/{token}', 'PasswordResetController@find');
-    Route::post('reset', 'PasswordResetController@reset');
+    Route::post('login', 'AuthController@login');
+    Route::post('signup', 'AuthController@signup');
+    Route::get('signup/activate/{token}', 'AuthController@signupActivate');
+    Route::post('signup/activate/resend', 'AuthController@resendActivationCode');
+    Route::group([
+        'middleware' => 'auth:api',
+    ], function () {
+        Route::get('logout', 'AuthController@logout');
+        Route::get('user', 'AuthController@user');
+    });
+    Route::group([
+        'prefix' => 'password',
+    ], function () {
+        Route::post('create', 'PasswordResetController@create');
+        Route::get('find/{token}', 'PasswordResetController@find');
+        Route::post('reset', 'PasswordResetController@reset');
+    });
 });
+
+function ngx_translate_parse($value)
+{
+    preg_match_all("|(.:)(.*)[\s.]|U",
+        $value,
+        $out);
+    if (isset($out[0])) {
+        $ouN = 0;
+        foreach ($out[0] as $ou) {
+            $value = str_replace($ou, ' {{ ' . $out[2][$ouN] . ' }} ', $value);
+            $ouN++;
+        }
+    }
+    return $value;
+}
+

@@ -143,7 +143,10 @@ return [
         Illuminate\Redis\RedisServiceProvider::class,
         Illuminate\Auth\Passwords\PasswordResetServiceProvider::class,
         Illuminate\Session\SessionServiceProvider::class,
-        Illuminate\Translation\TranslationServiceProvider::class,
+        /**
+         * Replaced by pierresilva\TranslationLoader\TranslationServiceProvider::class,
+         */
+        // Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
@@ -151,11 +154,23 @@ return [
          * Custom packages
          */
         pierresilva\Modules\ModulesServiceProvider::class,
+        pierresilva\Sentinel\SentinelServiceProvider::class,
+        pierresilva\PassportJwtClaims\PassportJwtClaimsServiceProvider::class,
+        pierresilva\InverseSeed\InverseSeedServiceProvider::class,
+        pierresilva\SchemaBuilder\SchemaBuilderServiceProvider::class,
+        pierresilva\DatabaseModels\DatabaseModelsServiceProvider::class,
+        pierresilva\CodeGenerator\CodeGeneratorServiceProvider::class,
+        pierresilva\ModelStatus\ModelStatusServiceProvider::class,
+        pierresilva\Activitylog\ActivitylogServiceProvider::class,
+        pierresilva\Translatable\TranslatableServiceProvider::class,
+        pierresilva\TranslationLoader\TranslationServiceProvider::class,
+        pierresilva\QueryBuilder\QueryBuilderServiceProvider::class,
+        pierresilva\SchemalessAttributes\SchemalessAttributesServiceProvider::class,
 
         /*
          * Package Service Providers...
          */
-        Laravel\Passport\PassportServiceProvider::class,
+        // Laravel\Passport\PassportServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -219,6 +234,7 @@ return [
          * Custom packages
          */
         'Module' => pierresilva\Modules\Facades\Module::class,
+        'Sentinel' => pierresilva\Sentinel\Facades\Sentinel::class,
 
     ],
 

@@ -1,0 +1,45 @@
+{
+    "name": "pierresilva/passport-custom-jwt",
+    "description": "Customize JWT claims in Laravel Passport access tokens",
+    "type": "laravel",
+    "keywords": [
+        "jwt",
+        "api",
+        "laravel",
+        "passport",
+        "claims",
+        "custom",
+        "openid connect",
+        "openid",
+        "oidc"
+    ],
+    "require": {
+        "php":"^7.0",
+        "laravel/passport": "^4.0"
+    },
+    "require-dev": {},
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Pierre Silva",
+            "email": "pierremichelsilva@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "pierresilva\\JwtClaims\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {}
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "laravel": {
+            "providers": [
+                "pierresilva\\JwtClaims\\JwtClaimsServiceProvider"
+            ]
+        }
+    }
+}

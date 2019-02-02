@@ -2,32 +2,41 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
 use App\Notifications\SignupActivate;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
-class AuthController extends Controller
+class AuthController extends ApiController
 {
     //
     /**
      * Create user
      *
-     * @param  [string] name
-     * @param  [string] email
-     * @param  [string] password
-     * @param  [string] password_confirmation
-     * @return [string] message
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse [string] message
      */
     public function signup(Request $request)
     {
-        $request->validate([
+        $validation = Validator::make($request->all(), [
             'name' => 'required|string',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|confirmed',
         ]);
+
+        if($validation->fails()){
+            return response()->json([
+                'status' => 422,
+                'message' => 'Validation errors',
+                'response' => [
+                    'errors' => $validation->errors()
+                ]
+            ], 422);
+        }
+
         $user = new User([
             'name' => $request->name,
             'email' => $request->email,
@@ -35,14 +44,14 @@ class AuthController extends Controller
         ]);
         $user->save();
 
+        $user->assignRole(2);
+
         $avatar = \Avatar::create($user->name)->getImageObject()->encode('png');
-        \Storage::disk('public')->put('avatars/' . $user->id . '/avatar.png', (string) $avatar);
+        \Storage::disk('public')->put('avatars/' . $user->id . '/avatar.png', (string)$avatar);
 
         $this->sendActivationCode($user);
 
-        return response()->json([
-            'message' => 'Successfully created user!',
-        ], 201);
+        return $this->responseSuccess('Successfully created user!', [], 201);
     }
 
     /**
@@ -123,6 +132,7 @@ class AuthController extends Controller
             'password' => 'required|string',
             'remember_me' => 'boolean',
         ]);
+
         $credentials = request(['email', 'password']);
 
         //$credentials['active'] = 1;
@@ -130,29 +140,35 @@ class AuthController extends Controller
 
         if (!Auth::attempt($credentials)) {
             return response()->json([
-                'message' => 'Credentials do not match!',
-                'errors' => [
-                    'invalid_credentials' => 'Please verify your credentials',
+                'status' => 1,
+                'response' => [
+                    'errors' => [
+                        'invalid_credentials' => 'Verifique su email o contraseña.',
+                    ],
                 ],
+                'message' => 'Credenciales no validas!',
             ], 401);
         }
 
         if (!auth()->user()->email_verified_at) {
             \Auth::logout();
             return response()->json([
-                'message' => 'Account not verified!',
-                'errors' => [
-                    'account_not_verified' => 'The account has not been verified yet',
-                ],
+                'status' => 1,
+                'message' => 'Cuenta no verificada!',
+                'response' => [
+                    'errors' => [
+                        'account_not_verified' => 'La cuenta no ha sido verificada aun.',
+                    ]
+                ]
             ], 401);
         }
 
         if (!auth()->user()->active) {
             \Auth::logout();
             return response()->json([
-                'message' => 'Account inactive!',
+                'message' => 'Cuenta inactiva!',
                 'errors' => [
-                    'account_inactive' => 'The account is inactive',
+                    'account_inactive' => 'La cuenta se encuentra en estado inactivo.',
                 ],
             ], 401);
         }
@@ -166,11 +182,15 @@ class AuthController extends Controller
 
         $token->save();
         return response()->json([
-            'access_token' => $tokenResult->accessToken,
-            'token_type' => 'Bearer',
-            'expires_at' => Carbon::parse(
-                $tokenResult->token->expires_at
-            )->toDateTimeString(),
+            'message' => 'Ingreso con éxito!',
+            'status' => 0,
+            'response' => [
+                'token' => $tokenResult->accessToken,
+                'user' => base64_encode(json_encode(auth()->user())),
+                'time' => Carbon::parse(
+                    $tokenResult->token->expires_at
+                )->timestamp,
+            ]
         ]);
     }
 
@@ -183,7 +203,9 @@ class AuthController extends Controller
     {
         $request->user()->token()->revoke();
         return response()->json([
+            'status' => 0,
             'message' => 'Successfully logged out',
+            'response' => []
         ]);
     }
 
@@ -194,7 +216,13 @@ class AuthController extends Controller
      */
     public function user(Request $request)
     {
-        return response()->json($request->user());
+        return response()->json([
+            'message' => 'OK',
+            'response' => [
+                'data' => $request->user(),
+            ],
+            'status' => 0,
+        ]);
     }
 
     /**
@@ -208,16 +236,25 @@ class AuthController extends Controller
         $user = User::where('activation_token', $token)->first();
         if (!$user) {
             return response()->json([
-                'message' => 'Invalid activation code!',
-                'errors' => [
-                    'activation_code_invalid' => 'This activation token is invalid',
+                'status' => 1,
+                'response' => [
+                    'errors' => [
+                        'activation_code_invalid' => 'This activation token is invalid',
+                    ],
                 ],
+                'message' => 'Invalid activation code!',
             ], 404);
         }
         $user->active = true;
         $user->activation_token = null;
         $user->email_verified_at = now();
         $user->save();
-        return $user;
+        return response()->json([
+            'status' => 0,
+            'response' => [
+                'data' => $user
+            ],
+            'message' => 'Successfully activated account!',
+        ], 200);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Translation\Translator;
 
 class AppRefresh extends Command
 {
@@ -37,12 +38,11 @@ class AppRefresh extends Command
      */
     public function handle()
     {
-        //
-
         $environment = config('app.env');
 
         if ($environment === 'production') {
             $this->error('This command is only available in local environment!');
+            return;
         }
 
         $this->info("Refreshing the app!");
@@ -51,9 +51,18 @@ class AppRefresh extends Command
             '--seed' => true
         ]);
 
-        \Artisan::call('passport:install', [
-            '--force' => true
-        ]);
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            \Artisan::call('passport:install', [
+                '--force' => true
+            ]);
+        } else {
+            exec('sudo rm -rf ' . storage_path() . '/oauth-*.key');
+            \Artisan::call('passport:install', [
+                '--force' => true
+            ]);
+            exec('sudo chown www-data:www-data ' . storage_path() . '/oauth-*.key');
+            exec('sudo chmod 600 ' . storage_path() . '/oauth-*.key');
+        }
 
         $this->info("App refreshed succesfuly!");
 

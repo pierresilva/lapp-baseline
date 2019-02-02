@@ -68,7 +68,7 @@ class MakeModuleCommand extends Command
     public function getOptions()
     {
         return [
-            ['quick', null, InputOption::VALUE_OPTIONAL, 'Skip the make:module wizard and use default values.', null],
+            ['quick', null, InputOption::VALUE_OPTIONAL, 'Skip the module:make wizard and use default values.', null],
         ];
     }
 
