@@ -130,7 +130,6 @@ class ForeignKeyForm extends PureComponent<Props, State> {
     }
 
     setCurrentMethodName = (event: { target: { value: string } }) => {
-
         this.setState({
             currentMethodName: event.target.value
         });
