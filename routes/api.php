@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Translation\Translator;
+use pierresilva\Modules\Facades\Module;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,14 +31,22 @@ Route::get('settings', function () {
     ], 200);
 });
 
-Route::get('users/{userId}', function ($userId = null) {
+Route::get('users/{userId?}', function ($userId = null) {
+
     if (!$userId) {
-        $userId = 1;
+        $users = \App\User::all()->toArray();
+
+        return response()->json([
+            'message' => 'usuarios obtenidos con éxito!',
+            'data' => $users,
+        ], 200);
     }
+
     $user = \App\User::findOrFail($userId)->toArray();
 
     return response()->json([
-        'user' => $user,
+        'message' => 'usuario obtenido con éxito!',
+        'data' => $user,
     ], 200);
 });
 
@@ -47,14 +55,29 @@ Route::get('translations/{lang}', function ($lang) {
 
     $translationFiles = File::files(base_path('resources/lang/' . app()->getLocale()));
 
+    $modules = Module::all();
+
+    if ($modules) {
+        foreach ($modules as $module) {
+            $moduleLangFiles = File::files(base_path('app/Modules/' . $module['basename'] . '/Resources/Lang/' . app()->getLocale()));
+            foreach ($moduleLangFiles as $moduleLangFile) {
+                $index = count($translationFiles);
+                $translationFiles[$index] = $moduleLangFile;
+            }
+        }
+    }
+
     $files = [];
     foreach ($translationFiles as $path) {
         $files[] = pathinfo($path);
     }
 
     $langs = [];
-
     foreach ($files as $file) {
+        if (get_string_between($file['dirname'], 'Modules/', '/Resources')) {
+            $langs['module.' . strtolower(get_string_between($file['dirname'], 'Modules/', '/Resources')) . '.' . $file['filename']] = File::getRequire($file['dirname'] . '/' . $file['basename']);
+            continue;
+        }
         $langs[$file['filename']] = File::getRequire($file['dirname'] . '/' . $file['basename']);
     }
 
@@ -157,9 +180,11 @@ Route::group([
 
 function ngx_translate_parse($value)
 {
-    preg_match_all("|(.:)(.*)[\s.]|U",
+    preg_match_all(
+        "|(.:)(.*)[\s.]|U",
         $value,
-        $out);
+        $out
+    );
     if (isset($out[0])) {
         $ouN = 0;
         foreach ($out[0] as $ou) {
@@ -170,3 +195,8 @@ function ngx_translate_parse($value)
     return $value;
 }
 
+function get_string_between($str, $from, $to)
+{
+    $sub = substr($str, strpos($str, $from) + strlen($from), strlen($str));
+    return substr($sub, 0, strpos($sub, $to));
+}

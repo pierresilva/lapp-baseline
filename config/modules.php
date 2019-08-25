@@ -68,7 +68,7 @@ return [
      |
      */
 
-    // 'custom_driver' => 'pierresilva\Modules\Repositories\LocalRepository',
+    'custom_driver' => 'pierresilva\Modules\Repositories\LocalRepository',
 
     /*
     |--------------------------------------------------------------------------
@@ -84,5 +84,15 @@ return [
         // To change where migrations go, specify the default
         // location as the key and the new location as the value:
         // 'Database/Migrations' => 'src/Database/Migrations',
+        'Config'              => 'Config',
+        'Database/Factories'  => 'Database/Factories',
+        'Database/Migrations' => 'Database/Migrations',
+        'Database/Seeds'      => 'Database/Seeds',
+        'Http/Controllers'    => 'Http/Controllers',
+        'Http/Middleware'     => 'Http/Middleware',
+        'Providers'           => 'Providers',
+        'Resources/Lang'      => 'Resources/Lang',
+        'Resources/Views'     => 'Resources/Views',
+        'Routes'              => 'Routes'
     ],
 ];

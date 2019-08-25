@@ -27,7 +27,7 @@ class AuthController extends ApiController
             'password' => 'required|string|confirmed',
         ]);
 
-        if($validation->fails()){
+        if ($validation->fails()) {
             return response()->json([
                 'status' => 422,
                 'message' => 'Validation errors',
@@ -47,7 +47,7 @@ class AuthController extends ApiController
         $user->assignRole(2);
 
         $avatar = \Avatar::create($user->name)->getImageObject()->encode('png');
-        \Storage::disk('public')->put('avatars/' . $user->id . '/avatar.png', (string)$avatar);
+        \Storage::disk('public')->put('avatars/' . $user->id . '/avatar.png', (string) $avatar);
 
         $this->sendActivationCode($user);
 
@@ -186,7 +186,10 @@ class AuthController extends ApiController
             'status' => 0,
             'response' => [
                 'token' => $tokenResult->accessToken,
-                'user' => base64_encode(json_encode(auth()->user())),
+                'user' => json_encode(auth()->user()),
+                'name' => auth()->user()->name,
+                'id' => auth()->user()->id,
+                'email' => auth()->user()->email,
                 'time' => Carbon::parse(
                     $tokenResult->token->expires_at
                 )->timestamp,

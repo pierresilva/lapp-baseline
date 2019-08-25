@@ -9,7 +9,8 @@ class SchemaParserController extends Controller
 {
     //
 
-    public function parse(Request $request) {
+    public function parse(Request $request)
+    {
         $tables = [];
 
         foreach ($request->schema['tables'] as $table) {
