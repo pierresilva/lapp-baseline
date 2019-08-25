@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Users extends Model
 {
-    
+
 
     /**
      * The database table used by the model.
@@ -16,10 +16,10 @@ class Users extends Model
     protected $table = 'users';
 
     /**
-    * The database primary key value.
-    *
-    * @var string
-    */
+     * The database primary key value.
+     *
+     * @var string
+     */
     protected $primaryKey = 'id';
 
     /**
@@ -28,14 +28,14 @@ class Users extends Model
      * @var array
      */
     protected $fillable = [
-                  'name',
-                  'email',
-                  'password',
-                  'active',
-                  'avatar',
-                  'permission_user',
-                  'role_user'
-              ];
+        'name',
+        'email',
+        'password',
+        'active',
+        'avatar',
+        'permission_user',
+        'role_user'
+    ];
 
     /**
      * The attributes that should be mutated to dates.
@@ -43,20 +43,20 @@ class Users extends Model
      * @var array
      */
     protected $dates = [];
-    
+
     /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
     protected $casts = [];
-    
+
     /**
      * Get the permissionUser for this model.
      */
     public function permissionUser()
     {
-        return $this->hasMany('App\Models\PermissionUser','user_id','id');
+        return $this->hasMany('App\Models\PermissionUser', 'user_id', 'id');
     }
 
     /**
@@ -64,9 +64,6 @@ class Users extends Model
      */
     public function roleUsers()
     {
-        return $this->hasMany('App\Models\RoleUser','user_id','id');
+        return $this->hasMany('App\Models\RoleUser', 'user_id', 'id');
     }
-
-
-
 }

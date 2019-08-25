@@ -33,7 +33,7 @@ Add the service provider to your `config/app.php` file within the `providers` ke
 If you wish to enable generators only for your local environment, you should install it via composer using the --dev option like this:
 
 ```shell
-composer require reliese/laravel-database-models --dev
+composer require pierresilva/laravel-database-models --dev
 ```
 
 Then you'll need to register the provider in `app/Providers/AppServiceProvider.php` file.

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>CovalentBl</title>
+  <base href="/lapp-baseline/public/app/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link
+    href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+    rel="stylesheet">
+  <style>
+    .lds-ring {
+      display: inline-block;
+      position: relative;
+      width: 116px;
+      height: 116px;
+      margin-top: calc(50vh - 68px);
+      margin-left: calc(50vw - 68px);
+    }
+
+    .lds-ring div {
+      box-sizing: border-box;
+      display: block;
+      position: absolute;
+      width: 101px;
+      height: 101px;
+      margin: 12px;
+      border: 12px solid gray;
+      border-radius: 50%;
+      animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+      border-color: gray transparent transparent transparent;
+    }
+
+    .lds-ring div:nth-child(1) {
+      animation-delay: -0.45s;
+    }
+
+    .lds-ring div:nth-child(2) {
+      animation-delay: -0.3s;
+    }
+
+    .lds-ring div:nth-child(3) {
+      animation-delay: -0.15s;
+    }
+
+    @keyframes lds-ring {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+  <script>
+    if (!window.jQuery) document.write('<script src="js/jquery-3.0.0.min.js"><\/script>');
+  </script>
+<link rel="stylesheet" href="styles.4ee3fb6f8d51f33bd02f.css"></head>
+
+<body>
+  <app-root>
+    <div class="lds-ring">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </app-root>
+<script type="text/javascript" src="runtime.6cf1794912eb723d6584.js"></script><script type="text/javascript" src="polyfills.e254f6b9bf511460eb6d.js"></script><script type="text/javascript" src="scripts.ac7b57843eb4fe6c9e2c.js"></script><script type="text/javascript" src="main.f114ad57541c7286a701.js"></script></body>
+
+</html>
