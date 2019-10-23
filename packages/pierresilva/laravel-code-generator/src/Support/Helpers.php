@@ -204,7 +204,7 @@ class Helpers
     {
         $name = self::removePostFixWith($name, '_id');
 
-        return ucfirst(studly_case(Str::singular($name)));
+        return ucfirst(\Illuminate\Support\Str::studly(Str::singular($name)));
     }
 
     /**
@@ -250,7 +250,7 @@ class Helpers
      */
     public static function getProperCaseFor($modelName, $key = null)
     {
-        $snake = snake_case($modelName);
+        $snake = \Illuminate\Support\Str::snake($modelName);
 
         if (Config::shouldBePlural($key)) {
             return Str::plural($snake);
@@ -294,7 +294,7 @@ class Helpers
     {
         $snake = self::getProperCaseFor($modelName, 'resource-file-name');
 
-        return str_finish($snake, '.json');
+        return \Illuminate\Support\Str::finish($snake, '.json');
     }
 
     /**
@@ -375,13 +375,13 @@ class Helpers
         foreach ($patterns as $pattern) {
 
             if ($caseSensitive) {
-                if (str_is($pattern, $subject)) {
+                if (\Illuminate\Support\Str::is($pattern, $subject)) {
                     $matchedPattern = $pattern;
                     return true;
                 }
             } else {
                 $lowerPattern = strtolower($pattern);
-                if (str_is($lowerPattern, $lowerSubject)) {
+                if (\Illuminate\Support\Str::is($lowerPattern, $lowerSubject)) {
                     $matchedPattern = $pattern;
                     return true;
                 }

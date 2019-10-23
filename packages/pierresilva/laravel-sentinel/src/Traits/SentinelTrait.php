@@ -2,6 +2,8 @@
 
 namespace pierresilva\Sentinel\Traits;
 
+use Illuminate\Support\Str;
+
 trait SentinelTrait
 {
     use PermissionTrait;
@@ -233,15 +235,15 @@ trait SentinelTrait
     public function __call($method, $arguments = [])
     {
         // Handle isRoleslug() methods
-        if (starts_with($method, 'is') and $method !== 'is') {
+        if (Str::startsWith($method, 'is') and $method !== 'is') {
             $role = kebab_case(substr($method, 2));
 
             return $this->isRole($role);
         }
 
         // Handle canDoSomething() methods
-        if (starts_with($method, 'can') and $method !== 'can') {
-            $permission = kebab_case(substr($method, 3));
+        if (Str::startsWith($method, 'can') and $method !== 'can') {
+            $permission = Str::kebab(substr($method, 3));
 
             return $this->can($permission);
         }

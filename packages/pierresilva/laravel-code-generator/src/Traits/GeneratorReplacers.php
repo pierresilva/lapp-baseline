@@ -22,9 +22,9 @@ trait GeneratorReplacers
         $stub = $this->strReplace($prefix . 'name_sentence', ucfirst($englishSingle), $stub);
         $stub = $this->strReplace($prefix . 'name_plural', $plural, $stub);
         $stub = $this->strReplace($prefix . 'name_plural_title', Str::titleCase($plural), $stub);
-        $stub = $this->strReplace($prefix . 'name_snake', snake_case($modelName), $stub);
-        $stub = $this->strReplace($prefix . 'name_studly', studly_case($modelName), $stub);
-        $stub = $this->strReplace($prefix . 'name_slug', str_slug($englishSingle), $stub);
+        $stub = $this->strReplace($prefix . 'name_snake', \Illuminate\Support\Str::studly($modelName), $stub);
+        $stub = $this->strReplace($prefix . 'name_studly', \Illuminate\Support\Str::studly($modelName), $stub);
+        $stub = $this->strReplace($prefix . 'name_slug', \Illuminate\Support\Str::slug($englishSingle), $stub);
         $stub = $this->strReplace($prefix . 'name_kebab', Str::kebabCase($modelName), $stub);
         $stub = $this->strReplace($prefix . 'name_title', Str::titleCase($englishSingle), $stub);
         $stub = $this->strReplace($prefix . 'name_title_lower', strtolower($englishSingle), $stub);

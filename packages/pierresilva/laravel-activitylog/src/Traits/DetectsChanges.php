@@ -114,7 +114,7 @@ trait DetectsChanges
     {
         $changes = [];
         foreach ($model->attributesToBeLogged() as $attribute) {
-            if (str_contains($attribute, '.')) {
+            if (\Illuminate\Support\Str::contains($attribute, '.')) {
                 $changes += self::getRelatedModelAttributeValue($model, $attribute);
             } else {
                 $changes += collect($model)->only($attribute)->toArray();

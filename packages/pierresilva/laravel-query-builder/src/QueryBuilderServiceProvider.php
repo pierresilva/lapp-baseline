@@ -5,6 +5,7 @@ namespace pierresilva\QueryBuilder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 
 class QueryBuilderServiceProvider extends ServiceProvider
 {
@@ -66,7 +67,7 @@ class QueryBuilderServiceProvider extends ServiceProvider
                     return collect($value)->map($this->bindTo($this))->all();
                 }
 
-                if (str_contains($value, ',')) {
+                if (Str::contains($value, ',')) {
                     return explode(',', $value);
                 }
 

@@ -462,13 +462,13 @@ class ForeignRelationship implements JsonWriter
         $parts = explode(';', $rawRelation);
         $collection = [];
         foreach ($parts as $part) {
-            if (!str_contains($part, ':')) {
+            if (!\Illuminate\Support\Str::contains($part, ':')) {
                 continue;
             }
 
             list($key, $value) = explode(':', $part);
 
-            if ($key == 'params' || str_contains($value, '|')) {
+            if ($key == 'params' || \Illuminate\Support\Str::contains($value, '|')) {
                 $value = explode('|', $value);
             }
 

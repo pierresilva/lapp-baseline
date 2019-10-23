@@ -140,8 +140,8 @@ return [
     |
      */
     'to' => [
-        'address' => 'pierremichelsilva@gmail.com',
-        'name' => 'Renova Email',
+        'address' => env('MAIL_TO', null),
+        'name' => env('MAIL_TO_NAME', null),
     ],
 
 ];

@@ -7,6 +7,7 @@ use pierresilva\CodeGenerator\Models\FieldMapper;
 use pierresilva\CodeGenerator\Support\FieldsOptimizer;
 use pierresilva\CodeGenerator\Traits\CommonCommand;
 use pierresilva\CodeGenerator\Traits\GeneratorReplacers;
+use Illuminate\Support\Str;
 use Exception;
 
 class FieldTransformer
@@ -86,17 +87,17 @@ class FieldTransformer
         foreach ($fieldNames as $fieldName) {
             $field = [];
 
-            if (str_contains($fieldName, ':')) {
+            if (Str::contains($fieldName, ':')) {
                 // Handle the following format
                 // name:a;html-type:select;options:first|second|third|fourth
-                if (!str_is('*name*:*', $fieldName)) {
+                if (!Str::is('*name*:*', $fieldName)) {
                     throw new Exception('The "name" property was not provided and is required!');
                 }
 
                 $parts = Helpers::convertStringToArray($fieldName, ';');
 
                 foreach ($parts as $part) {
-                    if (!str_is('*:*', $part) || count($properties = Helpers::convertStringToArray($part, ':')) < 2) {
+                    if (!Str::is('*:*', $part) || count($properties = Helpers::convertStringToArray($part, ':')) < 2) {
                         throw new Exception('Each provided property should use the following format "key:value"');
                     }
                     list($key, $value) = $properties;

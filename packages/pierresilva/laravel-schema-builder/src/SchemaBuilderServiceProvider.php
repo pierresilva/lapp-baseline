@@ -3,6 +3,7 @@
 namespace pierresilva\SchemaBuilder;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 
 class SchemaBuilderServiceProvider extends ServiceProvider
 {
@@ -25,7 +26,7 @@ class SchemaBuilderServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/resources', 'schema-builder');
 
         $app = $this->app;
-        $isLumen = str_contains($app->version(), 'Lumen');
+        $isLumen = Str::contains($app->version(), 'Lumen');
         $isEnabled = env('SCHEMABUILDER_ROUTES_ENABLED', false) && 'local' == env('APP_ENV');
 
         if ($isLumen && $isEnabled) {

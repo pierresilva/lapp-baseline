@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class AuthController extends ApiController
 {
@@ -46,8 +47,11 @@ class AuthController extends ApiController
 
         $user->assignRole(2);
 
-        $avatar = \Avatar::create($user->name)->getImageObject()->encode('png');
-        \Storage::disk('public')->put('avatars/' . $user->id . '/avatar.png', (string) $avatar);
+        $avatar = null; // \Avatar::create($user->name)->getImageObject()->encode('png');
+
+        if ($avatar) {
+            \Storage::disk('public')->put('avatars/' . $user->id . '/avatar.png', (string) $avatar);
+        }
 
         $this->sendActivationCode($user);
 
@@ -101,7 +105,7 @@ class AuthController extends ApiController
      */
     private function sendActivationCode(User $user)
     {
-        $activationToken = str_random(60);
+        $activationToken = Str::random(60);
 
         $user->activation_token = $activationToken;
         $user->save();

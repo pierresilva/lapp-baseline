@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+error_reporting(E_ALL & ~E_USER_NOTICE);
+
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 

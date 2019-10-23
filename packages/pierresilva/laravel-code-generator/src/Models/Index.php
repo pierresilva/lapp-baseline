@@ -3,6 +3,7 @@
 namespace pierresilva\CodeGenerator\Models;
 
 use pierresilva\CodeGenerator\Support\Contracts\JsonWriter;
+use Illuminate\Support\Str;
 use Exception;
 
 class Index implements JsonWriter
@@ -262,7 +263,7 @@ class Index implements JsonWriter
         $parts = explode(';', $rawIndex);
 
         foreach ($parts as $part) {
-            if (!str_contains($part, ':')) {
+            if (!Str::contains($part, ':')) {
                 continue;
             }
 

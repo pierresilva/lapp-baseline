@@ -24,11 +24,28 @@ Route::get('settings', function () {
     $settingsResponse = [];
 
     foreach ($settings as $key => $value) {
-        $settingsResponse[$value['key']] = $value['value'];
+        $settingsResponse[$value['group']][$value['key']] = $value['value'];
     }
-    return response()->json([
-        'app' => $settingsResponse,
-    ], 200);
+    return response()->json($settingsResponse, 200);
+});
+
+Route::post('/schema', function (Request $request) {
+    $model = "{$request->model}";
+
+    if(!class_exists($model)){
+        return response()->json(['message' => 'model_unavailable'], 500);
+    }
+
+    $modelInstance = new $model();
+
+    return response()->json(
+        [
+            'message' => 'Model obtained!',
+            'data' => [
+                'table' => $modelInstance->getTableColumns(),
+            ]
+        ]
+    );
 });
 
 Route::get('users/{userId?}', function ($userId = null) {
@@ -73,9 +90,11 @@ Route::get('translations/{lang}', function ($lang) {
     }
 
     $langs = [];
+
     foreach ($files as $file) {
         if (get_string_between($file['dirname'], 'Modules/', '/Resources')) {
-            $langs['module.' . strtolower(get_string_between($file['dirname'], 'Modules/', '/Resources')) . '.' . $file['filename']] = File::getRequire($file['dirname'] . '/' . $file['basename']);
+            $langs['module.' . strtolower(get_string_between($file['dirname'],
+                'Modules/', '/Resources')) . '.' . $file['filename']] = File::getRequire($file['dirname'] . '/' . $file['basename']);
             continue;
         }
         $langs[$file['filename']] = File::getRequire($file['dirname'] . '/' . $file['basename']);

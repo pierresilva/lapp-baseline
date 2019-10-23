@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\SchemaTrait;
 use Illuminate\Database\Eloquent\Model;
 
-class Users extends Model
+class User extends Model
 {
 
-
+    use SchemaTrait;
     /**
      * The database table used by the model.
      *
@@ -33,8 +34,6 @@ class Users extends Model
         'password',
         'active',
         'avatar',
-        'permission_user',
-        'role_user'
     ];
 
     /**
@@ -54,16 +53,16 @@ class Users extends Model
     /**
      * Get the permissionUser for this model.
      */
-    public function permissionUser()
+    public function permissions()
     {
-        return $this->hasMany('App\Models\PermissionUser', 'user_id', 'id');
+        return $this->hasMany('App\Models\Permission', 'user_id', 'id');
     }
 
     /**
      * Get the roleUsers for this model.
      */
-    public function roleUsers()
+    public function roles()
     {
-        return $this->hasMany('App\Models\RoleUser', 'user_id', 'id');
+        return $this->hasMany('App\Models\Role', 'user_id', 'id');
     }
 }

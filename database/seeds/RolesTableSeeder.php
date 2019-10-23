@@ -21,10 +21,11 @@ class RolesTableSeeder extends Seeder
             'active' => true,
             'activation_token' => null,
             'avatar' => 'avatar.jpg',
+            'email_verified_at' => \Carbon\Carbon::now(),
         ]);
 
-        $avatar = \Avatar::create($user->name)->getImageObject()->encode('png');
-        \Storage::disk('public')->put('avatars/' . $user->id . '/avatar.png', (string)$avatar);
+        // $avatar = \Avatar::create($user->name)->getImageObject()->encode('png');
+        // \Storage::disk('public')->put('avatars/' . $user->id . '/avatar.png', (string)$avatar);
 
         //
         $roleAdmin = Role::create([

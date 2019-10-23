@@ -3,6 +3,7 @@
 namespace pierresilva\CodeGenerator\Traits;
 
 use App;
+use Illuminate\Support\Str;
 use pierresilva\CodeGenerator\Support\Helpers;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -129,7 +130,7 @@ trait Migration
      */
     protected function makeCreateTableClassName($tableName)
     {
-        return sprintf('Create%sTable', studly_case($tableName));
+        return sprintf('Create%sTable', Str::studly($tableName));
     }
 
     /**
@@ -142,6 +143,6 @@ trait Migration
      */
     protected function makeAlterTableClassName($tableName, $id)
     {
-        return sprintf('Alter%sTable%s', studly_case($tableName), $id);
+        return sprintf('Alter%sTable%s', Str::studly($tableName), $id);
     }
 }

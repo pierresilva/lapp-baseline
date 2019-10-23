@@ -86,7 +86,7 @@ class QueryBuilder extends Builder
 
         $this->allowedFields = collect($fields)
             ->map(function (string $fieldName) {
-                if (! str_contains($fieldName, '.')) {
+                if (! \Illuminate\Support\Str::contains($fieldName, '.')) {
                     $modelTableName = $this->getModel()->getTable();
 
                     return "{$modelTableName}.{$fieldName}";

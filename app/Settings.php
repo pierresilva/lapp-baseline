@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\SchemaTrait;
 
 class Setting extends Model
 {
+    use SchemaTrait;
     /**
      * Indicates if the model should be timestamped.
      *
@@ -30,4 +32,6 @@ class Setting extends Model
      * @var array
      */
     protected $fillable = ['key', 'value'];
+
+
 }

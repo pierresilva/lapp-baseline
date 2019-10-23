@@ -3,6 +3,7 @@
 namespace pierresilva\Modules\Repositories;
 
 use Exception;
+use Illuminate\Support\Str;
 use pierresilva\Modules\Contracts\Repository as RepositoryContract;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Filesystem\Filesystem;
@@ -115,7 +116,7 @@ abstract class Repository implements RepositoryContract
      */
     public function getModulePath($slug)
     {
-        $module = studly_case(str_slug($slug));
+        $module = Str::studly(Str::slug($slug));
 
         if (\File::exists($this->getPath()."/{$module}/")) {
             return $this->getPath()."/{$module}/";

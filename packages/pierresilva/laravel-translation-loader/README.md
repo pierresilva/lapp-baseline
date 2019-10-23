@@ -10,8 +10,6 @@ You can even mix using language files and the database. If a translation is pres
 
 Want to use a different source for your translations? No problem! The package is [easily extendable](https://github.com/pierresilva/laravel-translation-loader#creating-your-own-translation-providers).
 
-pierresilva is a webdesign agency based in Antwerp, Belgium. You'll find an overview of all our open source projects [on our website](https://pierresilva.be/opensource).
-
 ## Installation
 
 You can install the package via composer:
