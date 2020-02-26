@@ -29,10 +29,10 @@ Route::get('settings', function () {
     return response()->json($settingsResponse, 200);
 });
 
-Route::post('/schema', function (Request $request) {
+Route::any('/schema', function (Request $request) {
     $model = "{$request->model}";
 
-    if(!class_exists($model)){
+    if (!class_exists($model)) {
         return response()->json(['message' => 'model_unavailable'], 500);
     }
 
@@ -98,6 +98,18 @@ Route::get('translations/{lang}', function ($lang) {
             continue;
         }
         $langs[$file['filename']] = File::getRequire($file['dirname'] . '/' . $file['basename']);
+    }
+
+    $dbLangs = \pierresilva\TranslationLoader\LanguageLine::getTranslationsForGroup($lang);
+
+    foreach ($langs as $langKey => $langValue) {
+        foreach ($dbLangs as $dbLangKey => $dbLangValue) {
+            if ($dbLangKey == $langKey) {
+                foreach ($dbLangValue as $key => $value) {
+                    $langs[$langKey][$key] = $value;
+                }
+            }
+        }
     }
 
     array_walk_recursive(

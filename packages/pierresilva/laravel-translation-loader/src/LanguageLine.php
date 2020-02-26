@@ -28,16 +28,21 @@ class LanguageLine extends Model
         static::deleted($flushGroupCache);
     }
 
-    public static function getTranslationsForGroup(string $locale, string $group): array
+    public static function getTranslationsForGroup(string $locale, string $group = null): array
     {
-        return Cache::rememberForever(static::getCacheKey($group, $locale), function () use ($group, $locale) {
+
+        return Cache::rememberForever(static::getCacheKey($locale, $group), function () use ($group, $locale) {
             return static::query()
-                    ->where('group', $group)
+                    ->where(function($query) use ($group) {
+                        if ($group) {
+                            $query->where('group', $group);
+                        }
+                    })
                     ->get()
                     ->reduce(function ($lines, LanguageLine $languageLine) use ($locale) {
                         $translation = $languageLine->getTranslation($locale);
                         if ($translation !== null) {
-                            array_set($lines, $languageLine->key, $translation);
+                            array_set($lines, "{$languageLine->group}." . $languageLine->key, $translation);
                         }
 
                         return $lines;
@@ -50,9 +55,9 @@ class LanguageLine extends Model
         return $this->query()->get()->toArray();
     }
 
-    public static function getCacheKey(string $group, string $locale): string
+    public static function getCacheKey(string $locale, string $group = null): string
     {
-        return "spatie.translation-loader.{$group}.{$locale}";
+        return "pierresilva.translation-loader". $group ? ".{$group}" : "" . ".{$locale}";
     }
 
     /**

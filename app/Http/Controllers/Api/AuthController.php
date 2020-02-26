@@ -55,7 +55,7 @@ class AuthController extends ApiController
 
         $this->sendActivationCode($user);
 
-        return $this->responseSuccess('Successfully created user!', [], 201);
+        return $this->responseSuccess('Successfully created user!. Please check your email inbox for details!', [], 201);
     }
 
     /**
@@ -236,7 +236,7 @@ class AuthController extends ApiController
      * Activate use account
      *
      * @param [type] $token
-     * @return void
+     * @return \Illuminate\Http\JsonResponse
      */
     public function signupActivate($token)
     {
