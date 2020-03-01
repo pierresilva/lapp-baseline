@@ -6,6 +6,7 @@ use App\Http\Controllers\ApiController;
 use App\Notifications\SignupActivate;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -18,7 +19,7 @@ class AuthController extends ApiController
      * Create user
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse [string] message
+     * @return JsonResponse [string] message
      */
     public function signup(Request $request)
     {
@@ -101,7 +102,7 @@ class AuthController extends ApiController
      * Send email with activation account url
      *
      * @param User $user
-     * @return void
+     * @return bool
      */
     private function sendActivationCode(User $user)
     {
@@ -122,12 +123,8 @@ class AuthController extends ApiController
     /**
      * Login user and create token
      *
-     * @param  [string] email
-     * @param  [string] password
-     * @param  [boolean] remember_me
-     * @return [string] access_token
-     * @return [string] token_type
-     * @return [string] expires_at
+     * @param Request $request
+     * @return JsonResponse [string] access_token
      */
     public function login(Request $request)
     {
@@ -204,7 +201,8 @@ class AuthController extends ApiController
     /**
      * Logout user (Revoke the token)
      *
-     * @return [string] message
+     * @param Request $request
+     * @return JsonResponse [string] message
      */
     public function logout(Request $request)
     {
@@ -219,7 +217,8 @@ class AuthController extends ApiController
     /**
      * Get the authenticated User
      *
-     * @return [json] user object
+     * @param Request $request
+     * @return JsonResponse [json] user object
      */
     public function user(Request $request)
     {
@@ -236,7 +235,7 @@ class AuthController extends ApiController
      * Activate use account
      *
      * @param [type] $token
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function signupActivate($token)
     {

@@ -209,6 +209,18 @@ Route::group([
     });
 });
 
+
+/**
+ * ADMIN ROUTES
+ */
+Route::group([
+    'namespace' => 'Api\Admin',
+    'middleware' => 'api',
+    'prefix' => 'admin'
+], function () {
+    Route::resource('languages', 'LanguagesController');
+});
+
 function ngx_translate_parse($value)
 {
     preg_match_all(
