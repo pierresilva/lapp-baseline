@@ -236,12 +236,27 @@ Route::group([
         return response()->json($resModules);
     });
 
+    Route::get('phploc/{make?}', 'PHPLocController@getStatics');
+
     Route::group([
         'prefix' => 'developer',
         'namespace' => 'ERDiagram'
     ], function() {
         Route::post('er-diagram', 'ERDiagramController@store');
         Route::get('er-diagram', 'ERDiagramController@index');
+
+        Route::post('terminal', function(Request $request) {
+            if(!$request->get('command')) {
+                return response([
+                    'Please write a command!'
+                ]);
+            }
+            if($request->get('command')) {
+                $output = [];
+                exec('cd ' . base_path() . ' && ' . $request->get('command'), $output);
+                return response($output);
+            }
+        });
     });
 
 });

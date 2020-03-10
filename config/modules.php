@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'path' => base_path('Modules'), // app_path('Modules'),
+    'path' => base_path('app/Modules'), // app_path('Modules'),
 
     /*
     |--------------------------------------------------------------------------
