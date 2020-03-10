@@ -48,12 +48,14 @@ class ApiController extends Controller
         string $message = 'OK',
         array $data = [],
         bool $meta = true,
+        bool $notify = false,
         int $code = 200,
         int $status = 0
     ) : \Illuminate\Http\JsonResponse {
         $body = [
             'status' => $status,
             'message' => $message,
+            'notify' => $notify,
             'response' => [
                 'data' => $data['data'] ?? $this->getData($data),
                 'meta' => $meta ? ($data['meta'] ?? $this->getMeta($data)) : null,

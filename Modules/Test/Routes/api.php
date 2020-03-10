@@ -13,8 +13,14 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/test', function (Request $request) {
-    return response()->json([
-        'message' => 'Laravel Modules test works!'
-    ]);
-}); //->middleware('auth:api');
+Route::group([
+    'middleware' => 'api',
+    'namespace' => 'App\Modules\Test\\',
+    'prefix' => 'test',
+], function ($router) {
+    Route::get('/app', function (Request $request) {
+        return response()->json([
+            'message' => 'Laravel Modules test works!'
+        ]);
+    }); //->middleware('auth:api');
+});

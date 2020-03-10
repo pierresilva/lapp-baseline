@@ -28,7 +28,7 @@ class LanguagesController extends ApiController
         // (3)paginate
         $languageLines = $languageLines->paginate($request->input('perPage') ?? 10);
 
-        return $this->responseSuccess('OK', [
+        return $this->responseSuccess('Lista obtenida con éxito!', [
             'data' => $this->getArrayData($this->getData($languageLines->toArray())),
             'meta' => $this->getMeta($languageLines->toArray()),
         ]);
@@ -67,7 +67,7 @@ class LanguagesController extends ApiController
 
         try{
             $newLangLine = LanguageLine::create($requestData);
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             \DB::rollBack();
 
             return $this->responseError('Ocurrió un error!', (config('app.env') != 'production') ? [
@@ -79,7 +79,7 @@ class LanguagesController extends ApiController
 
         \DB::commit();
 
-        return $this->responseSuccess('OK!', $newLangLine->toArray(), false);
+        return $this->responseSuccess('Item creado con éxito!', $newLangLine->toArray(), false, true);
 
     }
 
@@ -87,11 +87,14 @@ class LanguagesController extends ApiController
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
         //
+        $langLine = LanguageLine::findOrFail($id);
+
+        return $this->responseSuccess('Item obtenido con éxito!', $langLine->toArray(), false);
     }
 
     /**
@@ -108,23 +111,57 @@ class LanguagesController extends ApiController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
+     * @throws \Exception
      */
     public function update(Request $request, $id)
     {
         //
+        $requestData = $request->all();
+
+        $this->validate($request, [
+            'key' => 'required',
+            'group' => 'required',
+            'text.en' => 'required',
+            'text.es' => 'required',
+        ]);
+
+        $langLine = LanguageLine::findOrFail($id);
+
+        \DB::beginTransaction();
+
+        try{
+            $langLine->update($requestData);
+        } catch (\Exception $exception) {
+            \DB::rollBack();
+
+            return $this->responseError('Ocurrió un error!', (config('app.env') != 'production') ? [
+                'message' => $exception->getMessage(),
+                'file' => $exception->getFile(),
+                'line' => $exception->getLine(),
+            ] : []);
+        }
+
+        \DB::commit();
+
+        return $this->responseSuccess('Item actualizado con éxito!', $langLine->toArray(), false, true);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     * @throws \Exception
      */
     public function destroy($id)
     {
         //
+        $langLine = LanguageLine::findOrFail($id);
+        $langLine->delete();
+        return $this->responseSuccess('Item elimminado con éxito!', $langLine->toArray(), false, true);
     }
 }

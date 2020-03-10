@@ -78,6 +78,18 @@ return [
             'prefix' => '',
         ],
 
+        'couchdb' => [
+            'driver'   => 'couchdb',
+            'type'     => 'socket',
+            'host'     => '35.245.144.165',
+            'ip'       => null,
+            'port'     => '5984',
+            'dbname'   => 'forge',
+            'user'     => 'admin',
+            'password' => 'colombia1.*',
+            'logging'  => false,
+        ],
+
     ],
 
     /*

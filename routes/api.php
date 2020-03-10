@@ -93,8 +93,11 @@ Route::get('translations/{lang}', function ($lang) {
 
     foreach ($files as $file) {
         if (get_string_between($file['dirname'], 'Modules/', '/Resources')) {
-            $langs['module.' . strtolower(get_string_between($file['dirname'],
-                'Modules/', '/Resources')) . '.' . $file['filename']] = File::getRequire($file['dirname'] . '/' . $file['basename']);
+            $langs['module.' . strtolower(get_string_between(
+                $file['dirname'],
+                'Modules/',
+                '/Resources'
+            )) . '.' . $file['filename']] = File::getRequire($file['dirname'] . '/' . $file['basename']);
             continue;
         }
         $langs[$file['filename']] = File::getRequire($file['dirname'] . '/' . $file['basename']);
@@ -215,12 +218,53 @@ Route::group([
  */
 Route::group([
     'namespace' => 'Api\Admin',
-    'middleware' => 'api',
     'prefix' => 'admin'
 ], function () {
-    Route::resource('languages', 'LanguagesController');
+    Route::get('languages', 'LanguagesController@index');
+    Route::get('languages/{id}', 'LanguagesController@show');
+    Route::post('languages', 'LanguagesController@store');
+    Route::put('languages/{id}', 'LanguagesController@update');
+    Route::delete('languages/{id}', 'LanguagesController@destroy');
+
+    Route::get('modules', function() {
+        $modules = Module::all();
+        $resModules = [];
+        foreach ($modules as $module) {
+            $resModules[] = $module;
+        }
+
+        return response()->json($resModules);
+    });
+
+    Route::group([
+        'prefix' => 'developer',
+        'namespace' => 'ERDiagram'
+    ], function() {
+        Route::post('er-diagram', 'ERDiagramController@store');
+        Route::get('er-diagram', 'ERDiagramController@index');
+    });
+
 });
 
+/**
+ * API CouchDB Routes
+ */
+Route::group([
+    'prefix' => 'couchdb'
+], function () {
+    Route::resource('authors', 'AuthorController');
+    Route::resource('books', 'BookController');
+});
+
+
+/**
+ * Parse lang lines to ngx translate notation
+ *
+ * @param mixed $value
+ * @param mixed $ouN
+ * @param mixed $ou
+ * @return mixed
+ */
 function ngx_translate_parse($value)
 {
     preg_match_all(

@@ -167,6 +167,7 @@ return [
         pierresilva\TranslationLoader\TranslationServiceProvider::class,
         pierresilva\QueryBuilder\QueryBuilderServiceProvider::class,
         pierresilva\SchemalessAttributes\SchemalessAttributesServiceProvider::class,
+        pierresilva\CouchDB\ServiceProvider::class,
 
         /*
          * Package Service Providers...

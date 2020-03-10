@@ -4,8 +4,57 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "867976a1c98d9ac5a58c81684c3e2050",
+    "content-hash": "061c30cec3717052c1b04a997b4eff93",
     "packages": [
+        {
+            "name": "adbario/php-dot-notation",
+            "version": "2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/adbario/php-dot-notation.git",
+                "reference": "eee4fc81296531e6aafba4c2bbccfc5adab1676e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/adbario/php-dot-notation/zipball/eee4fc81296531e6aafba4c2bbccfc5adab1676e",
+                "reference": "eee4fc81296531e6aafba4c2bbccfc5adab1676e",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=5.5"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0|^5.0|^6.0",
+                "squizlabs/php_codesniffer": "^3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Adbar\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Riku Särkinen",
+                    "email": "riku@adbar.io"
+                }
+            ],
+            "description": "PHP dot notation access to arrays",
+            "homepage": "https://github.com/adbario/php-dot-notation",
+            "keywords": [
+                "ArrayAccess",
+                "dotnotation"
+            ],
+            "time": "2019-01-01T23:59:15+00:00"
+        },
         {
             "name": "barryvdh/laravel-ide-helper",
             "version": "v2.6.5",
@@ -598,6 +647,59 @@
                 "caching"
             ],
             "time": "2018-08-21T18:01:43+00:00"
+        },
+        {
+            "name": "doctrine/couchdb",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/couchdb-client.git",
+                "reference": "2ca8e66343b6d00658a86ba9709fffcdb5965251"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/couchdb-client/zipball/2ca8e66343b6d00658a86ba9709fffcdb5965251",
+                "reference": "2ca8e66343b6d00658a86ba9709fffcdb5965251",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Doctrine\\CouchDB": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Benjamin Eberlei",
+                    "email": "kontakt@beberlei.de"
+                },
+                {
+                    "name": "Lukas Kahwe Smith",
+                    "email": "smith@pooteeweet.org"
+                }
+            ],
+            "description": "CouchDB Client",
+            "homepage": "http://www.doctrine-project.org",
+            "keywords": [
+                "couchdb",
+                "persistence"
+            ],
+            "time": "2018-09-13T02:05:51+00:00"
         },
         {
             "name": "doctrine/dbal",
@@ -1701,20 +1803,20 @@
         },
         {
             "name": "laravel/helpers",
-            "version": "v1.1.1",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/helpers.git",
-                "reference": "b8eae9ddd461e89d0296f74fd069c413bf83b6fa"
+                "reference": "1f978fc5dad9f7f906b18242c654252615201de4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/helpers/zipball/b8eae9ddd461e89d0296f74fd069c413bf83b6fa",
-                "reference": "b8eae9ddd461e89d0296f74fd069c413bf83b6fa",
+                "url": "https://api.github.com/repos/laravel/helpers/zipball/1f978fc5dad9f7f906b18242c654252615201de4",
+                "reference": "1f978fc5dad9f7f906b18242c654252615201de4",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "~5.8.0|^6.0",
+                "illuminate/support": "~5.8.0|^6.0|^7.0",
                 "php": ">=7.1.3"
             },
             "require-dev": {
@@ -1750,7 +1852,7 @@
                 "helpers",
                 "laravel"
             ],
-            "time": "2019-07-30T15:25:31+00:00"
+            "time": "2020-03-03T13:52:16+00:00"
         },
         {
             "name": "laravel/passport",
@@ -7109,7 +7211,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "doctrine/couchdb": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

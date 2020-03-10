@@ -1,13 +1,18 @@
 {
     "name": "laravel/laravel",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
     "license": "MIT",
     "type": "project",
     "require": {
         "php": "^7.2",
         "ext-zip": "^1.15",
+        "adbario/php-dot-notation": "^2.2",
         "barryvdh/laravel-ide-helper": "^2.5",
+        "doctrine/couchdb": "dev-master",
         "doctrine/dbal": "^2.8",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^6.0",
@@ -20,7 +25,8 @@
         "spatie/array-to-xml": "^2.8",
         "spatie/period": "^1.1",
         "spatie/regex": "^1.4",
-        "spatie/tax-calculator": "^0.1.1"
+        "spatie/tax-calculator": "^0.1.1",
+        "ext-json": "*"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
@@ -40,6 +46,7 @@
             "App\\": "app/",
             "pierresilva\\Activitylog\\": "packages/pierresilva/laravel-activitylog/src",
             "pierresilva\\CodeGenerator\\": "packages/pierresilva/laravel-code-generator/src",
+            "pierresilva\\CouchDB\\": "packages/pierresilva/laravel-couchdb/src",
             "pierresilva\\DatabaseModels\\": "packages/pierresilva/laravel-database-models/src",
             "pierresilva\\InverseSeed\\": "packages/pierresilva/laravel-inverse-seed/src",
             "pierresilva\\ModelStatus\\": "packages/pierresilva/laravel-model-status/src",
